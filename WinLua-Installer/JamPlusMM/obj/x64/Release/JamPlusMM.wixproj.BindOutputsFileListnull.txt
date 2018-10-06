@@ -1,0 +1,2 @@
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\JamPlusMM\bin\x64\Release\JamPlusMM.msm
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\JamPlusMM\bin\x64\Release\JamPlusMM.wixpdb

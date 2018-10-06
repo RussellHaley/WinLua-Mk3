@@ -1,0 +1,7 @@
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\LibreSSL_MM\bin\x64\Release\LibreSSL_MM.msm
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\LibreSSL_MM\bin\x64\Release\LibreSSL_MM.wixpdb
+obj\x64\Release\LibreSSL_MM.wixobj
+obj\x64\Release\LibreSSL_MMcustom.wixobj
+obj\x64\Release\LibreSSL_MM.wixproj.BindContentsFileListnull.txt
+obj\x64\Release\LibreSSL_MM.wixproj.BindOutputsFileListnull.txt
+obj\x64\Release\LibreSSL_MM.wixproj.BindBuiltOutputsFileListnull.txt

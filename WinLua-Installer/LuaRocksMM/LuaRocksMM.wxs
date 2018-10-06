@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define ComponentRules="OneToOne"?>
+  <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
+  <?define SourceDir="..\..\Deploy"?>
+  <Module Id="LuaRocksMM" Language="1033" Version="3.0.3">
+    <Package Id="3ddf1f2b-8f02-4457-8d83-12b7df43e7e8" Manufacturer="LuaRocks.org" InstallerVersion="200" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="MergeRedirectFolder">
+        <Directory Id="owd00BD073775AEE2E88B74CCEE86DD7715" Name="bin">
+          <Component Id="owcEF9E42689CA04B2F2462C70E7A34A91A" Guid="bce7ce88-2dbf-72c1-8d6d-47521456a653">
+            <File Id="owfEF9E42689CA04B2F2462C70E7A34A91A" Source="$(var.SourceDir)\luarocks-3.0.3-windows-32\luarocks.exe" KeyPath="yes" />
+          </Component>
+          <Component Id="owcB067DC11745CC73E900E958C7B73D8E9" Guid="355a2a71-20e3-baa1-26a9-2a94fe7f7d27">
+            <File Id="owfB067DC11745CC73E900E958C7B73D8E9" Source="$(var.SourceDir)\luarocks-3.0.3-windows-32\luarocks-admin.exe" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <ComponentGroupRef Id="Custom" />
+  </Module>
+</Wix>

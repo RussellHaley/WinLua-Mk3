@@ -1,0 +1,10 @@
+obj\x64\Release\pthC341EA80E446544121BDA8753508C014\Product.wixobj
+obj\x64\Release\pthC341EA80E446544121BDA8753508C014\Features.wixobj
+obj\x64\Release\pthC341EA80E446544121BDA8753508C014\IISMeta.wixobj
+obj\x64\Release\pthC341EA80E446544121BDA8753508C014\UI.wixobj
+obj\x64\Release\pthC341EA80E446544121BDA8753508C014\UI-CustomDialog.wixobj
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-Installer\bin\x64\Release\WinLua_Installer.msi
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-Installer\bin\x64\Release\WinLua_Installer.wixpdb
+obj\x64\Release\WinLua-Installer.wixproj.BindContentsFileListnull.txt
+obj\x64\Release\WinLua-Installer.wixproj.BindOutputsFileListnull.txt
+obj\x64\Release\WinLua-Installer.wixproj.BindBuiltOutputsFileListnull.txt

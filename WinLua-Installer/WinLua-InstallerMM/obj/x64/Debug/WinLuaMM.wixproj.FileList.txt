@@ -1,0 +1,7 @@
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-InstallerMM\bin\x64\Debug\WinLua_InstallerMM.msm
+C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-InstallerMM\bin\x64\Debug\WinLua_InstallerMM.wixpdb
+obj\x64\Debug\WinLuaMM.wixobj
+obj\x64\Debug\WinLuaMMcustom.wixobj
+obj\x64\Debug\WinLuaMM.wixproj.BindContentsFileListnull.txt
+obj\x64\Debug\WinLuaMM.wixproj.BindOutputsFileListnull.txt
+obj\x64\Debug\WinLuaMM.wixproj.BindBuiltOutputsFileListnull.txt
