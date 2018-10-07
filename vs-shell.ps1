@@ -1,4 +1,13 @@
+Param
+(
+
+[switch]$RunMSBuild = $false,
+[string]$SrcDir,
+[string]$SlnFile
+)
+
 Import-Module Pscx
+
 
 #~ Original saved for posterity
 #~ function Import-VS9Vars
@@ -14,7 +23,7 @@ function Import-VSVars
 	$ok = ls $envcmd
 	if($ok){
 		Echo "Found" $envcmd
-		Push-EnvironmentBlock -Description "Before importing VS 2010 $vcargs vars"		
+		Push-EnvironmentBlock -Description "Before importing Visual Studio $vcargs vars"
 		Invoke-BatchFile $ok.FullName
 		#~ ls env:*
     }
@@ -25,3 +34,10 @@ function Import-VSVars
 }
 
 Import-VSVars
+if ($RunMSBuild -eq $true)
+{
+$curr = $pwd
+cd $SrcDir
+MSBuild  $SlnFile
+cd $pwd
+}

@@ -1,17 +1,31 @@
 local project_name = 'winlua'
 BINARY_OR_TEXT_COMMAND_LINE = 'text'
-ospath = require 'ospath'
-filefind = require 'filefind'
+--~ ospath = require 'ospath'
+--~ filefind = require 'filefind'
 local BIN = '../Deploy/x86/WinLua/'
 local so_ext = '.dll'
 local static_ext = '.lib'
 
+--~ Unzip something. Josh has build in tarball features?
 local function call7Zip()
 	
 end
-
-local function initLibreSSL()
+--~ Run the bash script in msys2
+--~ the script runs autogen and then uses cmake to create the 
+--~ VS project. The cmake step could alternatively be done in 
+--~ cmd or ps, but it seemed to fit with this toolchain
+local function initLibreSSL(bits)
+	if not bits then bits = 32 end
+	local file = "../libressl-autogen.sh"
 	local bash = "C:\\msys64\\usr\\bin\\bash"
+	local dir = "build-vs2017"
+	local arch = ""
+	if bits == 64 then 
+		dir = dir.."-64"
+		arch = "Win64"
+	end
+	local cmd = bash.." "..file.." "..dir.." 'Visual Studio 15 2017' "..arch
+	os.execute(cmd)
 	 --~ C:\msys64\usr\bin\bash -lc "cd git/WinLua-Mk3/Sources/libressl && ./autogen.sh"
 	--~ //chdir to libressl
 	--~ check for dir build-vs2017
@@ -21,7 +35,9 @@ local function initLibreSSL()
 	--~ run vs-shell.ps1 --> Will need ot include msbuild libressl to preserve environment
 end
 
-local function copyLibreSSL(dest)
+--~ Copy the libre files to the output directory
+local function copyLibreSSL(target, dest)
+	--~ jam['CopyFile']( libressl, dest.."libressl.exe", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe")
 --~ "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe"
 --~ "C:\Users\russh\git\WinLua-Mk3\Sources\libressl\build-vs2017\crypto\Debug\crypto-44.dll"
 --~ "C:\Users\russh\git\WinLua-Mk3\Sources\libressl\build-vs2017\ssl\Debug\ssl-46.dll"
@@ -29,19 +45,19 @@ local function copyLibreSSL(dest)
 --~ copy openssl.exe, crypto.dll, tls.dll, ssl.dll...?
 end
 
+--~ Do the libressl build. This should be a jam action or target?
 local function buildLibreSSL(dest)
 	initLibreSSL()
-	copyLibreSSL()
+	os.execute("powershell ../vs-shell.ps1 C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017 libressl.sln")
+	--~ os.execute("powershell vs-shell.ps1 ")
+	copyLibreSSL(BIN.."\\libressl")
 end
 
-local function downloadLuaRocks(uri,dest)
 
-end
-
-local function copyLuaRocks(dest)
-
-end
-
+--~ Write a lua file to a string variable in an hpp file.
+--~ var_name - name of the C variable refrencing the script
+--~ filename - output file name
+--~ src_file - lua file to encode
 local function genHppFile(var_name, filename, src_file)
 	local hpp = io.open(filename, 'w')
 	hpp:write(string.format('char * %s =  R"V0G0N(\r\n', var_name))
@@ -56,7 +72,16 @@ local function genHppFile(var_name, filename, src_file)
 	print('hpp file written.')
 end
 
+local function downloadLuaRocks(uri,dest)
 
+end
+
+--~ Copy the binary luarocks to our installer directory
+local function copyLuaRocks(dest)
+
+end
+
+--~ Create and return a table with Lua version and naming information. 
 local function makeVersion(version)
     if not version then 
         return nil,'Need a version number' 
@@ -87,13 +112,12 @@ local function buildLFS(build)
 	local target_name = 'lfs-'..build.shared_object
 	local path = 'luafilesystem/src'
 	--~ local lfs_path = jam_expand('@(' .. path .. ':T)')[1]
-	--~ jam['C.Defines']( nil, '_WINDLL')
-	--~ _CRT_SECURE_NO_WARNINGS;_WINDLL;
 	jam['C.ActiveTarget'](target_name)
+	jam['C.Defines'](nil, '_WIN32')
 	jam['C.OutputPath'](nil, build.outpath)
 	jam['C.OutputName'](nil, 'lfs')
 	jam['C.IncludeDirectories'] (nil, build.source_path)
-	jam['C.LinkLibraries']( nil, build.so_target)
+	--~ jam['C.LinkLibraries']( nil, build.so_target)
 	jam['C.Library'](nil, {path..'/*@=**.c@=**.h'}, 'shared')
 	jam['Depends']('all', target_name)
 end
@@ -114,6 +138,7 @@ local function buildLua(version_table)
 		jam['C.OutputPath']( nil, build.outpath..'/static')
 		jam['C.OutputName']( nil, build.static_object)
 		jam['C.IncludeDirectories']( nil, build.source_path)
+		--~ lua.c is patched and needs to be included with the other files
 		jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h'}, 'static')
 		jam['Depends']('all', build.static_target)
 		--Target for Shared Object
@@ -128,16 +153,17 @@ end
 local function buildWinLua()
 	local hpp = "src\\getopt-lua.hpp"
 	local getopt = "getopt.lua"
+	--~ NOTE: This runs regardless of the target because it's outside
+	--~ the jam execution
 	genHppFile('get_opts', hpp, getopt)
 
 	--~ hard coded for now. pretend this was returned from buildLua
 	link_libs = {'lua53-shared'}
-	buildLua({'5.1.5','5.2.4','5.3.5','5.4'})
+	buildLua({'5.1.5','5.2.4','5.3.5','5.4.0'})
 	jam['C.ActiveTarget']( project_name)
 	jam['C.OutputPath'](nil, BIN)
 	jam['C.OutputName'](nil, project_name)
 	jam['C.IncludeDirectories'](nil, {'lua-5.3.5/src','src/'})
-	--~ jam['C.LinkLibraries'](nil, 'lua54 lua53 lua52 lua51')
 	jam['C.LinkLibraries'](nil, link_libs)
 	jam['C.Application'](nil, 'src/dtlua.cpp')
 	jam['Depends']('all', project_name)
@@ -145,6 +171,10 @@ end
 
 
 buildWinLua()
+--~ This runs every time regardless of the target. I assume then it needs
+--~ to be added to the jam manefest (?) and executed that way as a target? 
+--~ Or is an action more appropriate?
 buildLibreSSL()
-copyLuaRocks()
+--~ copyLuaRocks()
+NOTE: buildInstaller need to be controlled by jamplus to ensure 
 --~ buildInstaller()

@@ -1,2 +1,6 @@
 Sources/.build
 Deploy/
+Sources/libressl/build-vs2017/
+Sources/libressl/build-vs2017-64/
+WinLua-Installer/.vs/WinLua-Installer/v15/.suo
+Sources/libressl/tap-driver.sh
