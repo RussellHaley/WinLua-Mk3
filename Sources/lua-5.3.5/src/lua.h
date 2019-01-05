@@ -138,8 +138,6 @@ typedef void * (*lua_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
 */
 extern const char lua_ident[];
 
-/*WinLua 'API'*/
-LUA_API int (mainL) (int argc, char **argv);
 
 /*
 ** state manipulation
@@ -215,8 +213,6 @@ LUA_API void  (lua_arith) (lua_State *L, int op);
 #define LUA_OPEQ	0
 #define LUA_OPLT	1
 #define LUA_OPLE	2
-
-
 
 LUA_API int   (lua_rawequal) (lua_State *L, int idx1, int idx2);
 LUA_API int   (lua_compare) (lua_State *L, int idx1, int idx2, int op);
@@ -440,6 +436,7 @@ LUA_API void (lua_sethook) (lua_State *L, lua_Hook func, int mask, int count);
 LUA_API lua_Hook (lua_gethook) (lua_State *L);
 LUA_API int (lua_gethookmask) (lua_State *L);
 LUA_API int (lua_gethookcount) (lua_State *L);
+
 
 struct lua_Debug {
   int event;

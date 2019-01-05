@@ -56,10 +56,12 @@ tests/arc4random_fork*
 tests/asn1evp*
 tests/asn1time*
 tests/bnaddsub*
+tests/bn_rand_interval*
 tests/cipher*
 tests/explicit_bzero*
 tests/freenull*
 tests/gost2814789t*
+tests/key_schedule*
 tests/mont*
 tests/rfc5280time*
 tests/ssl_versions*
@@ -74,6 +76,7 @@ tests/*.pem
 tests/testssl
 tests/*.txt
 tests/compat/*.c
+tests/x509name*
 !tests/optionstest.c
 !tests/*.test
 
@@ -126,6 +129,7 @@ include/openssl/*.h
 /apps/ocspcheck/*.c
 /apps/ocspcheck/ocspcheck*
 /apps/ocspcheck/compat/memmem.c
+/apps/ocspcheck/compat/inet_ntop.c
 
 /apps/nc/*.h
 /apps/nc/*.c

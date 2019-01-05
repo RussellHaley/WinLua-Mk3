@@ -4,7 +4,7 @@
   <?define ComponentRules="OneToOne"?>
   <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
   <?define SourceDir="..\..\5.4\Deploy\x86"?>
-  <!--<?define SourceDir="..\..\5.4\Deploy\$(var.Platform)"?>-->
+  <!--<?define SourceDir="..\..\Deploy\$(var.Platform)"?>-->
   <Module Id="WinLua" Language="1033" Version="5.4.0.0">
     <Package Id="87538283-837e-4822-accd-bb86fd9a8c42" Manufacturer="WinLua" InstallerVersion="301" Keywords="Lua" Description="WinLua is a binary distribution of the Lua, luafilesystem, and sol2." />
     <Directory Id="TARGETDIR" Name="SourceDir">

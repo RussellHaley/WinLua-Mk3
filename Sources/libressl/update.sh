@@ -32,17 +32,17 @@ bin_src=$OPENBSD_SRC/usr.bin
 sbin_src=$OPENBSD_SRC/usr.sbin
 
 # load library versions
-. $libcrypto_src/shlib_version
+. "$libcrypto_src/shlib_version"
 libcrypto_version=$major:$minor:0
 echo "libcrypto version $libcrypto_version"
 echo $libcrypto_version > crypto/VERSION
 
-. $libssl_src/shlib_version
+. "$libssl_src/shlib_version"
 libssl_version=$major:$minor:0
 echo "libssl version $libssl_version"
 echo $libssl_version > ssl/VERSION
 
-. $libtls_src/shlib_version
+. "$libtls_src/shlib_version"
 libtls_version=$major:$minor:0
 echo "libtls version $libtls_version"
 echo $libtls_version > tls/VERSION
@@ -126,13 +126,13 @@ copy_hdrs $libcrypto_src "stack/stack.h lhash/lhash.h stack/safestack.h
 	objects/objects.h asn1/asn1.h bn/bn.h ec/ec.h ecdsa/ecdsa.h
 	ecdh/ecdh.h rsa/rsa.h sha/sha.h x509/x509_vfy.h pkcs7/pkcs7.h pem/pem.h
 	pem/pem2.h hkdf/hkdf.h hmac/hmac.h rand/rand.h md5/md5.h
-	asn1/asn1_mac.h x509v3/x509v3.h conf/conf.h ocsp/ocsp.h
+	x509v3/x509v3.h conf/conf.h ocsp/ocsp.h
 	aes/aes.h modes/modes.h asn1/asn1t.h dso/dso.h bf/blowfish.h
 	bio/bio.h cast/cast.h cmac/cmac.h conf/conf_api.h des/des.h dh/dh.h
 	dsa/dsa.h engine/engine.h ui/ui.h pkcs12/pkcs12.h ts/ts.h
 	md4/md4.h ripemd/ripemd.h whrlpool/whrlpool.h idea/idea.h
 	rc2/rc2.h rc4/rc4.h ui/ui_compat.h txt_db/txt_db.h
-	chacha/chacha.h evp/evp.h poly1305/poly1305.h camellia/camellia.h
+	sm3/sm3.h chacha/chacha.h evp/evp.h poly1305/poly1305.h camellia/camellia.h
 	gost/gost.h curve25519/curve25519.h"
 
 copy_hdrs $libssl_src "srtp.h ssl.h ssl2.h ssl3.h ssl23.h tls1.h dtls1.h"
@@ -154,6 +154,7 @@ for i in `awk '/SOURCES|HEADERS/ { print $3 }' crypto/Makefile.am` ; do
 	fi
 done
 $CP crypto/compat/b_win.c crypto/bio
+$CP crypto/compat/crypto_lock_win.c crypto
 $CP crypto/compat/ui_openssl_win.c crypto/ui
 # add the libcrypto symbol export list
 $GREP -v OPENSSL_ia32cap_P $libcrypto_src/Symbols.list | $GREP '^[A-Za-z0-9_]' > crypto/crypto.sym
@@ -178,8 +179,21 @@ gen_asm() {
 	EOF
 	$MV $3.tmp $3
 }
+
+echo generating arm ASM source for elf
+gen_asm_stdout elf aes/asm/aes-armv4.pl crypto/aes/aes-elf-armv4.S
+gen_asm_stdout elf bn/asm/armv4-gf2m.pl crypto/bn/gf2m-elf-armv4.S
+gen_asm_stdout elf bn/asm/armv4-mont.pl crypto/bn/mont-elf-armv4.S
+gen_asm_stdout elf sha/asm/sha1-armv4-large.pl crypto/sha/sha1-elf-armv4.S
+gen_asm_stdout elf sha/asm/sha256-armv4.pl crypto/sha/sha256-elf-armv4.S
+gen_asm_stdout elf sha/asm/sha512-armv4.pl crypto/sha/sha512-elf-armv4.S
+gen_asm_stdout elf modes/asm/ghash-armv4.pl crypto/modes/ghash-elf-armv4.S
+$CP $libcrypto_src/armv4cpuid.S crypto
+$CP $libcrypto_src/armcap.c crypto
+$CP $libcrypto_src/arm_arch.h crypto
+
 for abi in elf macosx; do
-	echo generating ASM source for $abi
+	echo generating x86_64 ASM source for $abi
 	gen_asm_stdout $abi aes/asm/aes-x86_64.pl        crypto/aes/aes-$abi-x86_64.S
 	gen_asm_stdout $abi aes/asm/vpaes-x86_64.pl      crypto/aes/vpaes-$abi-x86_64.S
 	gen_asm_stdout $abi aes/asm/bsaes-x86_64.pl      crypto/aes/bsaes-$abi-x86_64.S

@@ -36,7 +36,13 @@ local function initLibreSSL(bits)
 end
 
 --~ Copy the libre files to the output directory
-local function copyLibreSSL(target, dest)
+local function copyLibreSSL(dest)
+	jam['C.ActiveTarget']("libressl")
+	jam['CopyFile']( nil, dest.."\\libressl.exe", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe")
+	jam['CopyFile']( nil, dest.."\\crypto-44.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\crypto\\Debug\\crypto-44.dll")
+	jam['CopyFile']( nil, dest.."\\ssl-46.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\ssl\\Debug\\ssl-46.dll")
+	jam['CopyFile']( nil, dest.."\\tls-18.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\tls\\Debug\\tls-18.dll")
+	jam['Depends']("all","libressl")
 	--~ jam['CopyFile']( libressl, dest.."libressl.exe", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe")
 --~ "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe"
 --~ "C:\Users\russh\git\WinLua-Mk3\Sources\libressl\build-vs2017\crypto\Debug\crypto-44.dll"
@@ -47,12 +53,16 @@ end
 
 --~ Do the libressl build. This should be a jam action or target?
 local function buildLibreSSL(dest)
-	initLibreSSL()
-	os.execute("powershell ../vs-shell.ps1 C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017 libressl.sln")
+	--~ initLibreSSL()
+	--~ os.execute("powershell ../vs-shell.ps1 C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017 libressl.sln")
 	--~ os.execute("powershell vs-shell.ps1 ")
 	copyLibreSSL(BIN.."\\libressl")
 end
 
+
+local function buildInstaller()
+--~ /need to set the evnironment and run msbuild on the installer
+end
 
 --~ Write a lua file to a string variable in an hpp file.
 --~ var_name - name of the C variable refrencing the script
@@ -87,6 +97,7 @@ local function makeVersion(version)
         return nil,'Need a version number' 
     end
     
+    --~ so = lua51, lua52 etc. so_target = lua51-shared...
     local so = string.format('lua%s', version:gsub('%.',''))
     if so:len() > 5 then
 		so = so:sub(1,5)
@@ -102,7 +113,7 @@ local function makeVersion(version)
         shared_object = so,
         static_object = so,
         shared_object_full = so_full,
-        outpath = BIN..version:sub(1,3)
+        outpath = BIN
     }
     return lua_build
 end
@@ -117,29 +128,37 @@ local function buildLFS(build)
 	jam['C.OutputPath'](nil, build.outpath)
 	jam['C.OutputName'](nil, 'lfs')
 	jam['C.IncludeDirectories'] (nil, build.source_path)
-	--~ jam['C.LinkLibraries']( nil, build.so_target)
+	jam['C.LinkLibraries']( nil, build.so_target)
 	jam['C.Library'](nil, {path..'/*@=**.c@=**.h'}, 'shared')
 	jam['Depends']('all', target_name)
 end
 
-local function buildLua(version_table)
+local function buildLua(version_table, winlua)
 	for i,v in pairs(version_table) do
 		local build = makeVersion(v)
+		if winlua then
+			build.source_path = 'winlua-src\\' .. build.source_path
+			build.outpath = build.outpath ..build.version:sub(1,3)
+		end
 		--Target for intermediary files
 		jam['C.ActiveTarget'](build.so_target)
 		jam['C.OutputPath']( nil, build.outpath)
 		jam['C.OutputName']( nil, build.shared_object)
 		jam['C.Defines']( nil, 'LUA_BUILD_AS_DLL')
 		jam['C.IncludeDirectories']( nil, build.source_path)
-		jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h'}, 'shared')
+		if winlua then
+			jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h'}, 'shared')
+		else
+			 jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h@-**/lua.c@-**/luac.c'}, 'shared')
+		end
 		
-		--Static Library: Target for intermediary files
+		--~ --Static Library: Target for intermediary files
 		jam['C.ActiveTarget']( build.static_target)
 		jam['C.OutputPath']( nil, build.outpath..'/static')
 		jam['C.OutputName']( nil, build.static_object)
 		jam['C.IncludeDirectories']( nil, build.source_path)
-		--~ lua.c is patched and needs to be included with the other files
-		jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h'}, 'static')
+		--lua.c is patched and needs to be included with the other files
+		jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h@-**/lua.c@-**/luac.c'}, 'static')
 		jam['Depends']('all', build.static_target)
 		--Target for Shared Object
 		jam['C.ActiveTarget']( build.shared_object)
@@ -150,8 +169,8 @@ local function buildLua(version_table)
 	end
 end
 
-local function buildWinLua()
-	local hpp = "src\\getopt-lua.hpp"
+local function buildDTLua()
+	local hpp = "winlua-src\\src\\getopt-lua.hpp"
 	local getopt = "getopt.lua"
 	--~ NOTE: This runs regardless of the target because it's outside
 	--~ the jam execution
@@ -159,7 +178,7 @@ local function buildWinLua()
 
 	--~ hard coded for now. pretend this was returned from buildLua
 	link_libs = {'lua53-shared'}
-	buildLua({'5.1.5','5.2.4','5.3.5','5.4.0'})
+	buildLua({'5.1.5','5.2.4','5.3.5','5.4'}, true)
 	jam['C.ActiveTarget']( project_name)
 	jam['C.OutputPath'](nil, BIN)
 	jam['C.OutputName'](nil, project_name)
@@ -169,12 +188,28 @@ local function buildWinLua()
 	jam['Depends']('all', project_name)
 end
 
-
-buildWinLua()
+local function buildStandardLua()
+	BIN = '../Deploy/x86/Lua/'
+	link_libs = {'lua53-shared'}
+	buildLua({'5.3.5'})
+	jam['C.ActiveTarget']( project_name)
+	jam['C.OutputPath'](nil, BIN)
+	jam['C.OutputName'](nil, 'lua')
+	jam['C.IncludeDirectories'](nil, {'lua-5.3.5/src'})
+	jam['C.LinkLibraries'](nil, link_libs)
+	jam['C.Application'](nil, 'lua-5.3.5/src/lua.c')
+	jam['C.ActiveTarget']( 'luac.exe')
+	jam['C.OutputName'](nil, 'luac')
+	jam['C.LinkLibraries'](nil, 'lua53-static' , 'static')
+	jam['C.Application'](nil, {'lua-5.3.5/src/luac.c'})
+end
+buildDTLua()
+--~ buildStandardLua()
 --~ This runs every time regardless of the target. I assume then it needs
 --~ to be added to the jam manefest (?) and executed that way as a target? 
 --~ Or is an action more appropriate?
 buildLibreSSL()
 --~ copyLuaRocks()
-NOTE: buildInstaller need to be controlled by jamplus to ensure 
+--~ NOTE: buildInstaller needs to be controlled by jamplus to ensure all targets are finished 
+--~ before creating the installer
 --~ buildInstaller()
