@@ -4,3 +4,5 @@ Sources/libressl/build-*/
 Sources/libressl/build-*-64/
 WinLua-Installer/.vs/WinLua-Installer/v15/.suo
 Sources/libressl/tap-driver.sh
+[Bb]bin
+[Oo]bj

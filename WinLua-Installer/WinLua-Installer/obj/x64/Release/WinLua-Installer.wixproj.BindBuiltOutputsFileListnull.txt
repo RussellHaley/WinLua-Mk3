@@ -1,2 +1,0 @@
-C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-Installer\bin\x64\Release\WinLua_Installer.msi
-C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-Installer\bin\x64\Release\WinLua_Installer.wixpdb

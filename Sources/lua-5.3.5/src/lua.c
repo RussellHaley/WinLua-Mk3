@@ -466,9 +466,6 @@ static int collectargs (char **argv, int *first) {
   int args = 0;
   int i;
   for (i = 1; argv[i] != NULL; i++) {
-	  printf("col: %d \n", i);
-	  printf("col: %d %s\n", i, argv[i]);
-
     *first = i;
     if (argv[i][0] != '-')  /* not an option? */
         return args;  /* stop handling options */
@@ -557,12 +554,6 @@ static int handle_luainit (lua_State *L) {
 static int pmain (lua_State *L) {
   int argc = (int)lua_tointeger(L, 1);
   char **argv = (char **)lua_touserdata(L, 2);
-  int i = 0;
-  for (i = 0; i < argc; i++)
-  {
-	  printf("%d: ", i);
-	  printf("%s\n", argv[i]);
-  }
   int script;
   int args = collectargs(argv, &script);
   luaL_checkversion(L);  /* check that interpreter has correct version */

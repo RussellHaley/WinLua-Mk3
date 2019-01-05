@@ -1,2 +1,0 @@
-C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-InstallerMM\bin\Debug\WinLua_InstallerMM.msm
-C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\WinLua-InstallerMM\bin\Debug\WinLua_InstallerMM.wixpdb

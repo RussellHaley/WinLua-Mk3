@@ -134,15 +134,22 @@ local function buildLFS(build)
 end
 
 local function buildLua(version_table, winlua)
+	local shared_outpath
+	local static_outpath
+	jam.CopyFile('C:/temp/conf.lcf','C:/temp/itworked.txt')
 	for i,v in pairs(version_table) do
 		local build = makeVersion(v)
 		if winlua then
-			build.source_path = 'winlua-src\\' .. build.source_path
-			build.outpath = build.outpath ..build.version:sub(1,3)
+			build.source_path = 'winlua-src/' .. build.source_path
+			shared_outpath = build.outpath ..build.version:sub(1,3)
+			static_outpath = build.outpath ..build.version:sub(1,3)
+		else
+			shared_outpath = build.outpath .. '/bin'
+			static_outpath = build.outpath .. '/static'
 		end
 		--Target for intermediary files
 		jam['C.ActiveTarget'](build.so_target)
-		jam['C.OutputPath']( nil, build.outpath)
+		jam['C.OutputPath']( nil, shared_outpath)
 		jam['C.OutputName']( nil, build.shared_object)
 		jam['C.Defines']( nil, 'LUA_BUILD_AS_DLL')
 		jam['C.IncludeDirectories']( nil, build.source_path)
@@ -154,17 +161,19 @@ local function buildLua(version_table, winlua)
 		
 		--~ --Static Library: Target for intermediary files
 		jam['C.ActiveTarget']( build.static_target)
-		jam['C.OutputPath']( nil, build.outpath..'/static')
+		jam['C.OutputPath']( nil, static_outpath)
 		jam['C.OutputName']( nil, build.static_object)
 		jam['C.IncludeDirectories']( nil, build.source_path)
 		--lua.c is patched and needs to be included with the other files
 		jam['C.Library']( nil, {build.source_path..'/*@=**.c@=**.h@-**/lua.c@-**/luac.c'}, 'static')
 		jam['Depends']('all', build.static_target)
+		
 		--Target for Shared Object
 		jam['C.ActiveTarget']( build.shared_object)
-		jam['C.OutputPath'](nil,  build.outpath)
+		jam['C.OutputPath'](nil,  shared_outpath)
 		--Why no target for the executable?
 			jam['Depends']('all', build.so_target)
+		build.outpath = shared_outpath
 		buildLFS(build)
 	end
 end
@@ -192,8 +201,8 @@ local function buildStandardLua()
 	BIN = '../Deploy/x86/Lua/'
 	link_libs = {'lua53-shared'}
 	buildLua({'5.3.5'})
-	jam['C.ActiveTarget']( project_name)
-	jam['C.OutputPath'](nil, BIN)
+	jam['C.ActiveTarget']( 'lua.exe')
+	jam['C.OutputPath'](nil, BIN .. '/bin')
 	jam['C.OutputName'](nil, 'lua')
 	jam['C.IncludeDirectories'](nil, {'lua-5.3.5/src'})
 	jam['C.LinkLibraries'](nil, link_libs)
@@ -203,8 +212,8 @@ local function buildStandardLua()
 	jam['C.LinkLibraries'](nil, 'lua53-static' , 'static')
 	jam['C.Application'](nil, {'lua-5.3.5/src/luac.c'})
 end
-buildDTLua()
---~ buildStandardLua()
+--~ buildDTLua()
+buildStandardLua()
 --~ This runs every time regardless of the target. I assume then it needs
 --~ to be added to the jam manefest (?) and executed that way as a target? 
 --~ Or is an action more appropriate?

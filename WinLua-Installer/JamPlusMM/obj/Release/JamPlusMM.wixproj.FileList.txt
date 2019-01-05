@@ -1,7 +1,0 @@
-C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\JamPlusMM\bin\Release\JamPlusMM.msm
-C:\Users\russh\Git\WinLua-VS2017\WinLua-Release2\WinLua-Installer\JamPlusMM\bin\Release\JamPlusMM.wixpdb
-obj\Release\JamPlusMM.wixobj
-obj\Release\JamPlusMMcustom.wixobj
-obj\Release\JamPlusMM.wixproj.BindContentsFileListnull.txt
-obj\Release\JamPlusMM.wixproj.BindOutputsFileListnull.txt
-obj\Release\JamPlusMM.wixproj.BindBuiltOutputsFileListnull.txt
