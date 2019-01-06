@@ -13,7 +13,7 @@
             <Merge Id="JamPlusMM" SourceFile="$(var.JamPlusMM.TargetPath)" DiskId="1" Language="1033" />
           </Directory>
           <Directory Id="LUA_INSTALLLOCATION" Name="Lua">
-            <Merge Id="WinLuaMM" SourceFile="$(var.WinLuaMM.TargetPath)" DiskId="1" Language="1033" />
+            <Merge Id="WinLua53MM" SourceFile="$(var.WinLua53MM.TargetPath)" DiskId="1" Language="1033" />
           </Directory>
           <Directory Id="LUAROCKS_INSTALLLOCATION" Name="LuaRocks">
             <Merge Id="LuaRocksMM" SourceFile="$(var.LuaRocksMM.TargetPath)" DiskId="1" Language="1033" />
@@ -21,8 +21,8 @@
         </Directory>
       </Directory>
     </Directory>
-    <Feature Id="WinLua" Title="WinLua 5.4" Description="Base installation of Lua Interpreter, DLLs, LuaFileSystem and Sol2" Level="1" AllowAdvertise="no" ConfigurableDirectory="LUA_INSTALLLOCATION">
-      <MergeRef Id="WinLuaMM" />
+    <Feature Id="WinLua" Title="WinLua 5.3" Description="Base installation of Lua Interpreter, DLLs, LuaFileSystem and Sol2" Level="1" AllowAdvertise="no" ConfigurableDirectory="LUA_INSTALLLOCATION">
+      <MergeRef Id="WinLua53MM" />
       <!-- Uncomment the below line to pull in IIS Metadata.  Otherwise delete if not needed -->
       <!--<ComponentGroupRef Id="webSite" />-->
     </Feature>

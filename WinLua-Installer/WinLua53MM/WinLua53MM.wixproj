@@ -31,8 +31,8 @@
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="WinLuaMM.wxs" />
-    <Compile Include="WinLuaMMcustom.wxs" />
+    <Compile Include="WinLua53MM.wxs" />
+    <Compile Include="WinLua53MMcustom.wxs" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>

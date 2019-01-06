@@ -67,7 +67,6 @@
     <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Include.wxi" />
     <Content Include="Resources\Banner.jpg" />
     <Content Include="Resources\Dialog.jpg" />
     <Content Include="Resources\EULA.rtf" />
@@ -90,9 +89,25 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\LuaRocksMM\LuaRocksMM.wixproj">
+      <Name>LuaRocksMM</Name>
+      <Project>{2575747f-b0bb-4d02-bda1-f3f5890e9566}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\WinLua-Multi-MM\WinLua-Multi-MM.wixproj">
       <Name>WinLua-Multi-MM</Name>
       <Project>{2d1a7c33-deda-4b58-bfd3-60d427997f4c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\WinLua53MM\WinLua53MM.wixproj">
+      <Name>WinLua53MM</Name>
+      <Project>{01335b14-5821-43d3-bad1-aa51bf70f1ff}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

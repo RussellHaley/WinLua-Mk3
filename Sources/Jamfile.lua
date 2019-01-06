@@ -37,11 +37,11 @@ end
 
 --~ Copy the libre files to the output directory
 local function copyLibreSSL(dest)
-	jam['C.ActiveTarget']("libressl")
-	jam['CopyFile']( nil, dest.."\\libressl.exe", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe")
-	jam['CopyFile']( nil, dest.."\\crypto-44.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\crypto\\Debug\\crypto-44.dll")
-	jam['CopyFile']( nil, dest.."\\ssl-46.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\ssl\\Debug\\ssl-46.dll")
-	jam['CopyFile']( nil, dest.."\\tls-18.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\tls\\Debug\\tls-18.dll")
+	jam['C.ActiveTarget']("copy-libressl")
+	jam['CopyFile']( nil, dest.."\\libressl.exe", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-2.9.0\\apps\\openssl\\Debug\\openssl.exe")
+	--~ jam['CopyFile']( nil, dest.."\\crypto-44.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\crypto\\Debug\\crypto-44.dll")
+	--~ jam['CopyFile']( nil, dest.."\\ssl-46.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\ssl\\Debug\\ssl-46.dll")
+	--~ jam['CopyFile']( nil, dest.."\\tls-18.dll", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\tls\\Debug\\tls-18.dll")
 	jam['Depends']("all","libressl")
 	--~ jam['CopyFile']( libressl, dest.."libressl.exe", "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe")
 --~ "C:\\Users\\russh\\git\\WinLua-Mk3\\Sources\\libressl\\build-vs2017\\apps\\openssl\\Debug\\openssl.exe"
@@ -136,7 +136,7 @@ end
 local function buildLua(version_table, winlua)
 	local shared_outpath
 	local static_outpath
-	jam.CopyFile('C:/temp/conf.lcf','C:/temp/itworked.txt')
+	jam.CopyFile('C:/temp/itworked.txt','C:/temp/conf.lcf')
 	for i,v in pairs(version_table) do
 		local build = makeVersion(v)
 		if winlua then
@@ -198,17 +198,20 @@ local function buildDTLua()
 end
 
 local function buildStandardLua()
-	BIN = '../Deploy/x86/Lua/'
+	BIN = '../Deploy/x86/Lua'
 	link_libs = {'lua53-shared'}
 	buildLua({'5.3.5'})
-	jam['C.ActiveTarget']( 'lua.exe')
+	jam['C.ActiveTarget']( 'lua')
 	jam['C.OutputPath'](nil, BIN .. '/bin')
 	jam['C.OutputName'](nil, 'lua')
 	jam['C.IncludeDirectories'](nil, {'lua-5.3.5/src'})
 	jam['C.LinkLibraries'](nil, link_libs)
 	jam['C.Application'](nil, 'lua-5.3.5/src/lua.c')
-	jam['C.ActiveTarget']( 'luac.exe')
+
+	jam['C.ActiveTarget']( 'luac')
+	jam['C.OutputPath'](nil, BIN .. '/bin')
 	jam['C.OutputName'](nil, 'luac')
+	jam['C.IncludeDirectories'](nil, {'lua-5.3.5/src'})
 	jam['C.LinkLibraries'](nil, 'lua53-static' , 'static')
 	jam['C.Application'](nil, {'lua-5.3.5/src/luac.c'})
 end
@@ -217,7 +220,8 @@ buildStandardLua()
 --~ This runs every time regardless of the target. I assume then it needs
 --~ to be added to the jam manefest (?) and executed that way as a target? 
 --~ Or is an action more appropriate?
-buildLibreSSL()
+--~ buildLibreSSL()
+--~ copyLibreSSL('C:\\temp\\')
 --~ copyLuaRocks()
 --~ NOTE: buildInstaller needs to be controlled by jamplus to ensure all targets are finished 
 --~ before creating the installer

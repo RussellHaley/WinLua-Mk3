@@ -6,22 +6,22 @@
   <!--<?define SourceDir="..\..\5.4\Deploy\x86"?>-->
   <?define SourceDir="..\..\Deploy\x86\"?>
   <!--<?define SourceDir="..\..\Deploy\$(var.Platform)\"?>-->
-  <Module Id="LibreSSL_MM" Language="1033" Version="2.7.3.0">
+  <Module Id="LibreSSL_MM" Language="1033" Version="2.9.0.0">
     <Package Id="ae00c157-b285-466b-9a13-9b994f74b69c" Manufacturer="OpenBSD" InstallerVersion="200" InstallScope="perMachine" Description="LibreSSL is the OpenBSD for of OpenSSL. The code has been modernized and scrutinized for security." />
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="MergeRedirectFolder">
         <Directory Id="libressldir" Name="bin">
           <Component Win64="$(var.Win64)" Id="owcF7C8BA4390DB6D8E70EC1F5E31DF3AB8" Guid="19cd4e11-7617-95db-39ad-d359f34bb03a">
-            <File Id="owfF7C8BA4390DB6D8E70EC1F5E31DF3AB8" Source="$(var.SourceDir)\LibreSSL\bin\crypto-43.dll" KeyPath="yes" />
+            <File Id="owfF7C8BA4390DB6D8E70EC1F5E31DF3AB8" Source="$(var.SourceDir)\LibreSSL\bin\crypto-45.dll" KeyPath="yes" />
           </Component>
           <Component Win64="$(var.Win64)" Id="owc1868BC296A603B57039410B3ED82C226" Guid="8a294fda-516c-767b-0692-51da04561881">
             <File Id="owf1868BC296A603B57039410B3ED82C226" Source="$(var.SourceDir)\LibreSSL\bin\openssl.exe" KeyPath="yes" />
           </Component>
           <Component Win64="$(var.Win64)" Id="owc9964A737BC2DB3DF98D242DD231CECD3" Guid="e82f21b3-b1c8-1c86-c888-e4d4b6745cb5">
-            <File Id="owf9964A737BC2DB3DF98D242DD231CECD3" Source="$(var.SourceDir)\LibreSSL\bin\ssl-45.dll" KeyPath="yes" />
+            <File Id="owf9964A737BC2DB3DF98D242DD231CECD3" Source="$(var.SourceDir)\LibreSSL\bin\ssl-47.dll" KeyPath="yes" />
           </Component>
           <Component Win64="$(var.Win64)" Id="owc74870CED37F1ED7F3B4D2BA47E80C31D" Guid="7f2615d6-2815-84c9-0bb5-e77f077c20b1">
-            <File Id="owf74870CED37F1ED7F3B4D2BA47E80C31D" Source="$(var.SourceDir)\LibreSSL\bin\tls-17.dll" KeyPath="yes" />
+            <File Id="owf74870CED37F1ED7F3B4D2BA47E80C31D" Source="$(var.SourceDir)\LibreSSL\bin\tls-19.dll" KeyPath="yes" />
           </Component>
         </Directory>
         <Directory Id="owdDE1E446C069BCE37BE3841D45170A7CA" Name="etc">

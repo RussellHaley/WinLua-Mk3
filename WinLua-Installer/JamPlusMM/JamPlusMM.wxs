@@ -4,7 +4,7 @@
   <?define ComponentRules="OneToOne"?>
   <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
   <!--BOTH X64 and x86 deploy from the x86 directory because the architecture specific files are stored in a win32 and win64 directory.-->
-  <?define SourceDir="..\..\5.4\Deploy\x86\JamPlus\bin"?>
+  <?define SourceDir="..\..\Deploy\x86\JamPlus"?>
   <!--<?define SourceDir="..\..\5.4\Deploy\$(var.Platform)\JamPlus\bin"?>-->
   <Module Id="JamPlusMM" Language="1033" Version="0.3.0.0">
     <Package Id="1801c348-2c0c-4cf9-8f8e-378c2a40a408" Manufacturer="JamPlusMM" InstallerVersion="200" />
