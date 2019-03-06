@@ -4,49 +4,87 @@ param (
  )
 
 $test = $null
-function final($code)
+
+function back()
 {
 	cd $orig_dir
+}
+function final($code)
+{
+	back
 	#~ write-host $code
 	exit $code
 }
 
-function GenerateSLNFiles()
+function makeSlnFiles($x64)
 {
+	$build_dir = "build-" + $version
+	$vsString = "Visual Studio 15 2017"
+	$deployDir = "$pwd\Deploy\"
+	if($x64)
+	{
+		$vsString = "$vsString" + " Win64"
+		$deployDir = "$deployDir\x64"
+		$build_dir = "$build_dir-x64"
+	}
+	else
+	{
+		$deployDir = "$deployDir\x86"
+	}
+	
 	cd Sources/libressl
 	mkdir $build_dir
 	cd $build_dir
-	cmake -DBUILD_SHARED_LIBS=ON -G"Visual Studio 15 2017" ..
+	cmake -DBUILD_SHARED_LIBS=ON -G"$vsString" -DCMAKE_INSTALL_PREFIX="$deploydir" ..
 
-	cd ..
-	mkdir "$build_dir-x64"
-	cd "$build_dir-x64"
-	cmake -DBUILD_SHARED_LIBS=ON -G"Visual Studio 15 2017 Win64" ..
 }
 
-$orig_dir = $pwd
-cd Sources/libressl
- 
- write-host "version is $version"
- #~ git branch -l | grep "$version"
- write-host "git branch -l | grep $version"
-$test = $(git branch -l | grep '$version')
-write-host "recieved $test"
-if($test)
+#Note this function doesn't work yet.
+function gitCheckout()
 {
-	#~ $test = $(git checkout "v$version")
-	echo $test
-	if($test) 
+	$orig_dir = $pwd
+	 #~ git branch -l | grep "$version"
+	 write-host "git branch -l | grep $version"
+	$test = $(git branch -l | grep '$version')
+	write-host "recieved $test"
+	if($test)
 	{
-		write-host 'we are good'
+		#~ $test = $(git checkout "v$version")
+		echo $test
+		if($test) 
+		{
+			write-host 'we are good'
+		}
+		final (1)
 	}
-	final (1)
+	else
+	{
+		write-host "Not a valid version. Check 'git tag -l'"
+		final (-1)
+	}
 }
-else
+
+function main()
 {
-	write-host "Not a valid version. Check 'git tag -l'"
-	final (-1)
+	
+	write-host "Initializing LibreSSL version $version..."
 }
 
-$build_dir = "build-" + $version
+Try{
+	$orig_dir = $pwd
+	main
+	makeSlnFiles($false)
+	back
+	makeSlnFiles($true)
+}
+Catch
+{
+	$ErrorMessage = $_.Exception.Message
+    $FailedItem = $_.Exception.ItemName
 
+	write-host "LibreSSL Init failed: $ErrorMessage - $FailedItem"
+}
+Finally
+{
+	final
+}

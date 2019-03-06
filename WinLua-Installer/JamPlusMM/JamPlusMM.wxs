@@ -9,7 +9,11 @@
   <Module Id="JamPlusMM" Language="1033" Version="0.3.0.0">
     <Package Id="1801c348-2c0c-4cf9-8f8e-378c2a40a408" Manufacturer="JamPlusMM" InstallerVersion="200" />
     <Directory Id="TARGETDIR" Name="SourceDir">
+      <!--<Directory Id="ProgramMenuFolder" />-->
       <Directory Id="MergeRedirectFolder">
+        <Component  Win64="$(var.Win64)" Id="owc4C95C141BF75C35412A3F77D244E9512" Guid="f20ea021-ba70-7692-8d89-c1afbc406c5f">
+          <File Id="owf4C95C141BF75C35412A3F77D244E9512" Source="$(var.SourceDir)\Jambase.jam" KeyPath="yes" />
+        </Component>
         <Directory Id="owdA0B1970AF2FACEEA095FFFF8F651612F" Name="docs">
           <Component Win64="$(var.Win64)" Id="owc5E7896FBBADB1C3733D55B7783FE42B1" Guid="f39e19dd-9176-25bd-e972-0acfd5f31654">
             <File Id="owf5E7896FBBADB1C3733D55B7783FE42B1" Source="$(var.SourceDir)\docs\arrowdown.png" KeyPath="yes" />
@@ -924,8 +928,7 @@
               <File Id="owfED5BDA1FF862C1B5EFF1BBE5AC989C1F" Source="$(var.SourceDir)\samples\lua-exe\clone.bat" KeyPath="yes" />
             </Component>
             <Component Id="owcBB6F3742AB02E62DC2830855429FC7AB" Guid="bb0df970-a6e7-a706-65fb-987d15164895">
-              <File Id="owfBB6F3742AB02E62DC2830855429FC7AB" Source="$(var.SourceDir)\samples\lua-exe\Jamfile.jam" KeyPath="yes">                
-              </File>
+              <File Id="owfBB6F3742AB02E62DC2830855429FC7AB" Source="$(var.SourceDir)\samples\lua-exe\Jamfile.jam" KeyPath="yes"></File>
             </Component>
           </Directory>
           <Directory Id="owd99F8A91E87622CC4EB47490EBE71792C" Name="macosx">
@@ -1749,8 +1752,7 @@
           </Directory>
         </Directory>
       </Directory>
-      <!--<Directory Id="ProgramMenuFolder" />-->
-      <Directory Id="StartMenuFolder">       
+      <Directory Id="StartMenuFolder">
         <Directory Id="scdB89794C04258EF18E71D3AAC6A60C302" Name="JamPlus" />
       </Directory>
     </Directory>

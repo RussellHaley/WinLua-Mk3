@@ -1,0 +1,128 @@
+LuaRocks 3.0.x installer.
+
+
+========================
+== Checking system... ==
+========================
+
+
+Admin privileges available for installing
+Looking for Lua interpreter
+    checking C:\Program Files (x86)\Common Files\Oracle\Java\javapath
+    checking C:\Python36\Scripts
+    checking C:\Python36
+    checking C:\WINDOWS\system32
+    checking C:\WINDOWS
+    checking C:\WINDOWS\System32\Wbem
+    checking C:\WINDOWS\System32\WindowsPowerShell\v1.0
+    checking C:\Program Files\PuTTY
+    checking C:\Program Files\dotnet
+    checking C:\Program Files\Microsoft SQL Server\130\Tools\Binn
+    checking C:\ProgramData\chocolatey
+    checking C:\Program Files\Git\cmd
+    checking C:\Program Files\CMake
+    checking C:\Program Files (x86)\Geany
+    checking C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit
+    checking C:\Program Files\LLVM
+    checking C:\Program Files\doxygen
+    checking C:\D\dmd2\windows
+    checking C:\D1\dmd\windows
+    checking C:\Program Files\TortoiseSVN
+    checking C:\WINDOWS\System32\OpenSSH
+    checking C:\Program Files (x86)\dub
+    checking C:\Program Files (x86)\WinLua\Lua\5.3
+    checking C:\Program Files (x86)\LibreSSL
+    checking C:\Program Files (x86)\WinLua\JamPlus\win32
+    checking C:\Program Files (x86)\WinLua\Lua
+       Found lua.exe, testing it...
+Interpreter found, now looking for link libraries...
+    checking for C:\Program Files (x86)\WinLua\Lua\lua5.3.lib
+    checking for C:\Program Files (x86)\WinLua\Lua\lua53.lib
+    checking for C:\Program Files (x86)\WinLua\Lua\lua5.3.dll
+    checking for C:\Program Files (x86)\WinLua\Lua\lua53.dll
+    checking for C:\Program Files (x86)\WinLua\Lua\liblua.dll.a
+    checking for C:\Program Files (x86)\WinLua\Lua\lib\lua5.3.lib
+    checking for C:\Program Files (x86)\WinLua\Lua\lib\lua53.lib
+    checking for C:\Program Files (x86)\WinLua\Lua\lib\lua5.3.dll
+    checking for C:\Program Files (x86)\WinLua\Lua\lib\lua53.dll
+    checking for C:\Program Files (x86)\WinLua\Lua\lib\liblua.dll.a
+    checking for C:\Program Files (x86)\WinLua\Lua\bin\lua5.3.lib
+    checking for C:\Program Files (x86)\WinLua\Lua\bin\lua53.lib
+       Found lua53.lib
+Link library found, now looking for headers...
+    checking for C:\Program Files (x86)\WinLua\Lua\include\lua\5.3\lua.h
+    checking for C:\Program Files (x86)\WinLua\Lua\include\lua53\lua.h
+    checking for C:\Program Files (x86)\WinLua\Lua\include\lua5.3\lua.h
+    checking for C:\Program Files (x86)\WinLua\Lua\include\lua.h
+       Found lua.h
+Headers found, checking runtime to use...
+    C:\Program Files (x86)\WinLua\Lua\bin\lua.exe uses VCRUNTIME140.DLL as runtime
+Runtime check completed.
+Looking for Microsoft toolchain matching runtime VCRUNTIME140 and architecture x86_64
+    checking: HKLM\Software\Microsoft\VisualStudio\14.0\Setup\VC
+    checking: HKLM\Software\Microsoft\VCExpress\14.0\Setup\VS
+    Cannot auto-detect Windows SDK version from VCRUNTIME140
+
+==========================
+== System check results ==
+==========================
+
+Will configure LuaRocks with the following paths:
+LuaRocks        : C:\Program Files (x86)\LuaRocks
+Config file     : C:\Program Files (x86)\LuaRocks\config-5.3.lua
+Rocktree        : c:\program files (x86)\winlua\lua\
+
+Lua interpreter : C:\Program Files (x86)\WinLua\Lua\bin\lua.exe
+    binaries    : C:\Program Files (x86)\WinLua\Lua\bin
+    libraries   : C:\Program Files (x86)\WinLua\Lua\bin
+    includes    : C:\Program Files (x86)\WinLua\Lua\include
+    architecture: x86_64
+    binary link : lua53.lib with runtime VCRUNTIME140.dll
+
+Compiler        : Microsoft (make sure it is in your path before using LuaRocks)
+
+Press <ENTER> to start installing, or press <CTRL>+<C> to abort. Use install /? for installation options.
+
+
+============================
+== Installing LuaRocks... ==
+============================
+
+
+Installing LuaRocks in C:\Program Files (x86)\LuaRocks...
+Created LuaRocks command: C:\Program Files (x86)\LuaRocks\luarocks.bat
+Created LuaRocks command: C:\Program Files (x86)\LuaRocks\luarocks-admin.bat
+
+Configuring LuaRocks...
+Created LuaRocks hardcoded settings file: C:\Program Files (x86)\LuaRocks\lua\luarocks\core\hardcoded.lua
+Created LuaRocks config file: C:\Program Files (x86)\LuaRocks\config-5.3.lua
+
+Creating rocktrees...
+Created system rocktree    : "c:\program files (x86)\winlua\lua\"
+Local user rocktree exists : "C:\Users\russh\AppData\Roaming\LuaRocks"
+
+Loading registry information for ".rockspec" files
+
+============================
+== LuaRocks is installed! ==
+============================
+
+
+You may want to add the following elements to your paths;
+Lua interpreter;
+  PATH     :   C:\Program Files (x86)\WinLua\Lua\bin
+  PATHEXT  :   .LUA
+LuaRocks;
+  PATH     :   C:\Program Files (x86)\LuaRocks
+  LUA_PATH :   C:\Program Files (x86)\LuaRocks\lua\?.lua;C:\Program Files (x86)\LuaRocks\lua\?\init.lua
+Local user rocktree (Note: %APPDATA% is user dependent);
+  PATH     :   %APPDATA%\LuaRocks\bin
+  LUA_PATH :   %APPDATA%\LuaRocks\share\lua\5.3\?.lua;%APPDATA%\LuaRocks\share\lua\5.3\?\init.lua
+  LUA_CPATH:   %APPDATA%\LuaRocks\lib\lua\5.3\?.dll
+System rocktree
+  PATH     :   c:\program files (x86)\winlua\lua\\bin
+  LUA_PATH :   c:\program files (x86)\winlua\lua\\share\lua\5.3\?.lua;c:\program files (x86)\winlua\lua\\share\lua\5.3\?\init.lua
+  LUA_CPATH:   c:\program files (x86)\winlua\lua\\lib\lua\5.3\?.dll
+
+Note that the %APPDATA% element in the paths above is user specific and it MUST be replaced by its actual value.
+For the current user that value is: C:\Users\russh\AppData\Roaming.
