@@ -1,2 +1,2 @@
-::~ lua.exe ..\\share\\create-config.lua /config c:\temp /tree ..\\..\\rocks /lua ..\\..\\lua\\5.3\\bin
-lua.exe ..\\share\\create-config.lua /config c:\temp /tree ..\\..\\rocks
+cd ..\share
+lua.exe create-config.lua /LUA "c:\program files (x86)\WinLua\Lua\5.3" /P "c:\program files (x86)\WinLua\LuaRocks\bin" /CONFIG "c:\program files (x86)\WinLua\LuaRocks"
