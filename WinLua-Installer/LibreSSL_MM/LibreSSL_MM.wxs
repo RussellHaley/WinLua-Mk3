@@ -46,14 +46,6 @@
           <Component Win64="$(var.Win64)" Id="owc6BAB8E59905AFD49F7CCDF4F1E7E5E18" Guid="491124b1-d8b6-f9d0-53b6-6a39c6516876">
             <File Id="owf6BAB8E59905AFD49F7CCDF4F1E7E5E18" Source="$(var.SourceDir)LibreSSL\include\tls.h" KeyPath="yes" />
           </Component>
-          <Directory Id="owdB8C34EE840709BE1546D03047F422A6D" Name="CMakeFiles">
-            <Component Win64="$(var.Win64)" Id="owc4644FE649214BEDBDB8BD9E2D575E7A1" Guid="a6bbd582-abc6-1224-c16e-e772da7ffe20">
-              <File Id="owf4644FE649214BEDBDB8BD9E2D575E7A1" Source="$(var.SourceDir)LibreSSL\include\CMakeFiles\generate.stamp" KeyPath="yes" />
-            </Component>
-            <Component Win64="$(var.Win64)" Id="owc08032DE62FBBB2C314559621383C246D" Guid="635e621a-9d62-ed0b-0f5b-a56a4fd16693">
-              <File Id="owf08032DE62FBBB2C314559621383C246D" Source="$(var.SourceDir)LibreSSL\include\CMakeFiles\generate.stamp.depend" KeyPath="yes" />
-            </Component>
-          </Directory>
           <Directory Id="owdC7EE5A9FAD77D347A48546F204881A08" Name="openssl">
             <Component Win64="$(var.Win64)" Id="owc3CF2F4084212D2B39626C4441967210C" Guid="16bfd519-f315-3bd9-f84c-8dd5b9c7b367">
               <File Id="owf3CF2F4084212D2B39626C4441967210C" Source="$(var.SourceDir)LibreSSL\include\openssl\aes.h" KeyPath="yes" />
@@ -268,23 +260,14 @@
           </Directory>
         </Directory>
         <Directory Id="owd16643BE9CBAEF26E96EDBB6FB712EE5D" Name="lib">
-          <Component Win64="$(var.Win64)" Id="owc73BA7054858D3FE981F077B3FB94A1A2" Guid="126c565a-a841-944e-7364-f27b3ae61015">
-            <File Id="owf73BA7054858D3FE981F077B3FB94A1A2" Source="$(var.SourceDir)LibreSSL\lib\crypto.lib" KeyPath="yes" />
-          </Component>
           <Component Win64="$(var.Win64)" Id="owc7BD001AEFCD17D8FF735F34D69A5365F" Guid="1d8ad339-38bc-54d4-d006-053bd5c48092">
-            <File Id="owf7BD001AEFCD17D8FF735F34D69A5365F" Source="$(var.SourceDir)LibreSSL\lib\crypto-43.lib" KeyPath="yes" />
-          </Component>
-          <Component Win64="$(var.Win64)" Id="owcE6D8E8C2620A1701F9381B4E0C148E6B" Guid="b7d6e59e-2e3b-c3e3-efd3-12ce2c582866">
-            <File Id="owfE6D8E8C2620A1701F9381B4E0C148E6B" Source="$(var.SourceDir)LibreSSL\lib\ssl.lib" KeyPath="yes" />
+            <File Id="owf7BD001AEFCD17D8FF735F34D69A5365F" Source="$(var.SourceDir)LibreSSL\lib\crypto-45.lib" KeyPath="yes" />
           </Component>
           <Component Win64="$(var.Win64)" Id="owcA54A866F883337233BED241570A10471" Guid="2fa31527-2bee-0ddc-1762-34629bd717e1">
-            <File Id="owfA54A866F883337233BED241570A10471" Source="$(var.SourceDir)LibreSSL\lib\ssl-45.lib" KeyPath="yes" />
-          </Component>
-          <Component Win64="$(var.Win64)" Id="owcF3B5A8EED9DF292EBCACD3A2E3D7D9F4" Guid="562fcc85-d1c8-a920-acbc-389cfc744c57">
-            <File Id="owfF3B5A8EED9DF292EBCACD3A2E3D7D9F4" Source="$(var.SourceDir)LibreSSL\lib\tls.lib" KeyPath="yes" />
+            <File Id="owfA54A866F883337233BED241570A10471" Source="$(var.SourceDir)LibreSSL\lib\ssl-47.lib" KeyPath="yes" />
           </Component>
           <Component Win64="$(var.Win64)" Id="owc692840EEF23695BB18C41843FBF041B9" Guid="9f4e0917-9fc9-7b8a-b98b-6825c586713e">
-            <File Id="owf692840EEF23695BB18C41843FBF041B9" Source="$(var.SourceDir)LibreSSL\lib\tls-17.lib" KeyPath="yes" />
+            <File Id="owf692840EEF23695BB18C41843FBF041B9" Source="$(var.SourceDir)LibreSSL\lib\tls-19.lib" KeyPath="yes" />
           </Component>
         </Directory>
         <Directory Id="owd2A8ED26A2AC05DCAED107202D9C7BF5F" Name="share">

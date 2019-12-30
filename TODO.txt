@@ -9,7 +9,7 @@ TODO:
 	- Add winluabuild info
 	- Add Chocolately Info
 - Rename and upload beta
-- Compile latest of Libressl
+- Compile latest of Libressl -3.0.2 Dec 29 2019
 - Remove JamPlus?
 - Start building vanilla Lua with Jamplus
 
