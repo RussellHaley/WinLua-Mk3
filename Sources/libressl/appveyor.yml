@@ -1,39 +1,32 @@
+image:
+  - Visual Studio 2015
+  #- Visual Studio 2017
+
 environment:
   PATH: C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Windows\System32;C:\Windows;%PATH%
 
   matrix:
-    # x86 builds
-    - GENERATOR: Visual Studio 14 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015 Win64
       CONFIG: Release
       SHARED_LIBS: ON
-    - GENERATOR: Visual Studio 14 2015
-      CONFIG: Release
-      SHARED_LIBS: OFF
-    - GENERATOR: Visual Studio 14 2015
-      CONFIG: Debug
-      SHARED_LIBS: ON
-    - GENERATOR: Visual Studio 14 2015
-      CONFIG: Debug
-      SHARED_LIBS: OFF
-
-    # x64 builds
-    - GENERATOR: Visual Studio 14 2015 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015
       CONFIG: Release
       SHARED_LIBS: ON
-    - GENERATOR: Visual Studio 14 2015 Win64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015 Win64
       CONFIG: Release
       SHARED_LIBS: OFF
-    - GENERATOR: Visual Studio 14 2015 Win64
-      CONFIG: Debug
-      SHARED_LIBS: ON
-    - GENERATOR: Visual Studio 14 2015 Win64
-      CONFIG: Debug
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      GENERATOR: Visual Studio 14 2015
+      CONFIG: Release
       SHARED_LIBS: OFF
 
 init:
-  # update msys2
+  # update mysy2
   - C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Sy pacman-mirrors"
-  - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Sy"
+  - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syu"
   - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S autoconf perl"
   - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S git"
 
@@ -41,7 +34,7 @@ before_build:
   - bash autogen.sh
   - mkdir build
   - cd build
-  - cmake .. -G "%GENERATOR%" -DBUILD_SHARED_LIBS=%SHARED_LIBS%
+  - cmake .. -G "%GENERATOR%" -DBUILD_SHARED_LIBS=%SHARED_LIBS% -DCMAKE_INSTALL_PREFIX=../local
 
 build_script:
   - cmake --build . --config %CONFIG%

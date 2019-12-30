@@ -128,12 +128,12 @@ copy_hdrs $libcrypto_src "stack/stack.h lhash/lhash.h stack/safestack.h
 	pem/pem2.h hkdf/hkdf.h hmac/hmac.h rand/rand.h md5/md5.h
 	x509v3/x509v3.h conf/conf.h ocsp/ocsp.h
 	aes/aes.h modes/modes.h asn1/asn1t.h dso/dso.h bf/blowfish.h
-	bio/bio.h cast/cast.h cmac/cmac.h conf/conf_api.h des/des.h dh/dh.h
+	bio/bio.h cast/cast.h cmac/cmac.h cms/cms.h conf/conf_api.h des/des.h dh/dh.h
 	dsa/dsa.h engine/engine.h ui/ui.h pkcs12/pkcs12.h ts/ts.h
 	md4/md4.h ripemd/ripemd.h whrlpool/whrlpool.h idea/idea.h
 	rc2/rc2.h rc4/rc4.h ui/ui_compat.h txt_db/txt_db.h
-	sm3/sm3.h chacha/chacha.h evp/evp.h poly1305/poly1305.h camellia/camellia.h
-	gost/gost.h curve25519/curve25519.h"
+	sm3/sm3.h sm4/sm4.h chacha/chacha.h evp/evp.h poly1305/poly1305.h
+	camellia/camellia.h gost/gost.h curve25519/curve25519.h"
 
 copy_hdrs $libssl_src "srtp.h ssl.h ssl2.h ssl3.h ssl23.h tls1.h dtls1.h"
 
@@ -154,30 +154,46 @@ for i in `awk '/SOURCES|HEADERS/ { print $3 }' crypto/Makefile.am` ; do
 	fi
 done
 $CP crypto/compat/b_win.c crypto/bio
-$CP crypto/compat/crypto_lock_win.c crypto
 $CP crypto/compat/ui_openssl_win.c crypto/ui
 # add the libcrypto symbol export list
 $GREP -v OPENSSL_ia32cap_P $libcrypto_src/Symbols.list | $GREP '^[A-Za-z0-9_]' > crypto/crypto.sym
 
+fixup_masm() {
+	cpp -I./crypto $1     \
+		| sed -e 's/^#/;/'    \
+		| sed -e 's/|/OR/g'   \
+		| sed -e 's/~/NOT/g'  \
+		| sed -e 's/1 << \([0-9]*\)/1 SHL \1/g' \
+		> $2
+}
+
 # generate assembly crypto algorithms
 asm_src=$libcrypto_src
 gen_asm_stdout() {
-	perl $asm_src/$2 $1 > $3.tmp
+	CC=true perl $asm_src/$2 $1 > $3.tmp
 	[ $1 = "elf" ] && cat <<-EOF >> $3.tmp
 	#if defined(HAVE_GNU_STACK)
 	.section .note.GNU-stack,"",%progbits
 	#endif
 	EOF
-	$MV $3.tmp $3
+	if [ $1 = "masm" ]; then
+		fixup_masm $3.tmp $3
+	else
+		$MV $3.tmp $3
+	fi
 }
 gen_asm() {
-	perl $asm_src/$2 $1 $3.tmp
+	CC=true perl $asm_src/$2 $1 $3.tmp
 	[ $1 = "elf" ] && cat <<-EOF >> $3.tmp
 	#if defined(HAVE_GNU_STACK)
 	.section .note.GNU-stack,"",%progbits
 	#endif
 	EOF
-	$MV $3.tmp $3
+	if [ $1 = "masm" ]; then
+		fixup_masm $3.tmp $3
+	else
+		$MV $3.tmp $3
+	fi
 }
 
 echo generating arm ASM source for elf
@@ -192,7 +208,7 @@ $CP $libcrypto_src/armv4cpuid.S crypto
 $CP $libcrypto_src/armcap.c crypto
 $CP $libcrypto_src/arm_arch.h crypto
 
-for abi in elf macosx; do
+for abi in elf macosx masm mingw64; do
 	echo generating x86_64 ASM source for $abi
 	gen_asm_stdout $abi aes/asm/aes-x86_64.pl        crypto/aes/aes-$abi-x86_64.S
 	gen_asm_stdout $abi aes/asm/vpaes-x86_64.pl      crypto/aes/vpaes-$abi-x86_64.S

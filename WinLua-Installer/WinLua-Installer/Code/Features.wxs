@@ -29,7 +29,7 @@
     <Feature Id="JamPlus" Description="JamPlus Build System. Allows you to build C/C++ and Lua from the command line. 100% cross platform." Title="JamPlus Build System" ConfigurableDirectory="JAMPLUS_INSTALLLOCATION" Level="1" AllowAdvertise="no">
       <MergeRef Id="JamPlusMM" />
     </Feature>
-    <Feature Id="LibreSSL" Description="LibreSSL Encryption Library" Title="LibreSSL" Level="1" AllowAdvertise="no" ConfigurableDirectory="LIBRESSL_INSTALLLOCATION">
+    <Feature Id="LibreSSL" Description="OpenBSD fork of the OpenSSL Encryption Library" Title="LibreSSL" Level="1" AllowAdvertise="no" ConfigurableDirectory="LIBRESSL_INSTALLLOCATION">
       <MergeRef Id="LibreSSL_MM" />
     </Feature>
     <Feature Id="LuaRocks" Description="LuaRocks Package Manager" Title="LuaRocks" Level="1" AllowAdvertise="no" ConfigurableDirectory="LUAROCKS_INSTALLLOCATION">

@@ -28,23 +28,113 @@ history is also available from Git.
 
 LibreSSL Portable Release Notes:
 
+3.0.2 - Stable release
+
+	* Use a valid curve when constructing an EC_KEY that looks like X25519.
+	  The recent EC group cofactor change results in stricter validation,
+	  which causes the EC_GROUP_set_generator() call to fail.
+	  Issue reported and fix tested by rsadowski@
+
+	* Fixed a padding oracle in PKCS7_dataDecode and CMS_decrypt_set1_pkey.
+	  (Note that the CMS code is currently disabled)
+	  Port of Edlinger's Fix for CVE-2019-1563 from OpenSSL 1.1.1 (old license) 
+
+	* Avoid a path traversal bug in s_server on Windows when run with the -WWW
+	  or -HTTP options, due to incomplete path check logic.
+	  Issue reported and fix tested by Jobert Abma
+
+3.0.1 - Development release
+
+	* Ported Billy Brumley's fix for CVE-2019-1547 in OpenSSL 1.1.1. If a NULL
+	  or zero cofactor is passed to EC_GROUP_set_generator(), try to compute
+	  it using Hasse's bound. This works as long as the cofactor is small
+	  enough.
+
+	* Fixed a memory leak in error paths for eckey_type2param().
+
+	* Initial work on supporting Cryptographic Message Syntax (CMS) in
+	  libcrypto (not enabled).
+
+	* Various manual page improvements and additions.
+
+	* Added a CMake check for an existing uninstall target, facilitating
+	  embedding LibreSSL in larger CMake projects, from Matthew Albrecht.
+
+3.0.0 - Development release
+
+	* Completed the port of RSA_METHOD accessors from the OpenSSL 1.1 API.
+
+	* Documented undescribed options and removed unfunctional options
+	  description in openssl(1) manual.
+
+	* A plethora of small fixes due to regular oss-fuzz testing.
+
+	* Various side channels in DSA and ECDSA were addressed.  These are some of
+	  the many issues found in an extensive systematic analysis of bignum usage
+	  by Samuel Weiser, David Schrammel et al.
+
+	* Enabled openssl(1) speed subcommand on Windows platform.
+
+	* Enabled performance optimizations when building with Visual Studio on Windows.
+
+	* Fixed incorrect carry operation in 512 addition for Streebog.
+
+	* Fixed -modulus option with openssl(1) dsa subcommand.
+
+	* Fixed PVK format output issue with openssl(1) dsa and rsa subcommand.
+
+2.9.2 - Bug fixes
+
+	* Fixed portable builds with older versions of MacOS,
+	  Android targets < API 21, and Solaris 10
+
+	* Fixed SRTP profile advertisement for DTLS servers.
+
+2.9.1 - Stable release
+
+	* Added support for XChaCha20 and XChaCha20-Poly1305.
+
+	* Added support for AES key wrap constructions via the EVP interface.
+
+	* Partial port of the OpenSSL EC_KEY_METHOD API for use by OpenSSH.
+
+	* Added pbkdf2 key derivation support to openssl(1)
+
+	* Removed SHA224 based handshake signatures from consideration for use in a TLS 1.2 handshake.
+
+	* Changed the default digest type of openssl(1) enc to to sha256.
+
+	* Changed the default digest type of openssl(1) dgst to sha256.
+
+	* Changed the default digest type of openssl(1) x509 -fingerprint to sha256.
+
+	* Changed the default digest type of openssl(1) crl -fingerprint to sha256.
+
+	* Improved Windows, Android, and ARM compatibility, including assembly
+	  optimizations on Mingw-w64 targets.
+
 2.9.0 - Development release
+
+	* Added the SM4 block cipher from the Chinese standard GB/T 32907-2016.
+
+	* Fixed warnings about clock_gettime on Windows Visual Studio builds.
+
+	* Fixed CMake builds on systems where getpagesize is defined as an
+	  inline function.
 
 	* CRYPTO_LOCK is now automatically initialized, with the legacy
 	  callbacks stubbed for compatibility.
 
-	* Added the SM3 hash function from the Chinese standard GB/T
-	  32905-2016.
+	* Added the SM3 hash function from the Chinese standard GB/T 32905-2016.
 
 	* Added more OPENSSL_NO_* macros for compatibility with OpenSSL.
 
 	* Added extensive interoperability tests between LibreSSL and OpenSSL
 	  1.0 and 1.1.
 
-	* Added additional wycheproof tests and related bug fixes.
+	* Added additional Wycheproof tests and related bug fixes.
 
 	* Simplified sigalgs option processing and handshake signing algorithm
-	  selection.
 
 	* Added the ability to use the RSA PSS algorithm for handshake
 	  signatures.
@@ -57,17 +147,19 @@ LibreSSL Portable Release Notes:
 
 	* Added handshake state machine from RFC8446.
 
-	* Removed some ASN.1 related code from libcrypto that had not been
-	  used since around 2000.
+	* Removed some ASN.1 related code from libcrypto that had not been used
+	  since around 2000.
 
 	* Unexported internal symbols and internalized more record layer structs.
 
 	* Added support for assembly optimizations on 32-bit ARM ELF targets.
 
-	* Fix timing vulnerability in ECDSA signature generation (CVE-2018-0735).
+	* Improved protection against timing side channels in ECDSA signature
+	  generation.
 
-	* Fix for Portsmash vulnerability originally by Brumley, ul Hassan and
-	  Tuveri.
+	* Coordinate blinding was added to some elliptic curves. This is the
+	  last bit of the work by Brumley et al. to protect against the
+	  Portsmash vulnerability.
 
 	* Ensure transcript handshake is always freed with TLS 1.2.
 

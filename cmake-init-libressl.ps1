@@ -1,6 +1,5 @@
 param (
-    [Parameter(Mandatory=$true)][string]$version
-    #~ [string]$password = $( Read-Host "Input password, please" )
+    [Parameter(Mandatory=$true)][string]$libressl_version
  )
 
 $test = $null
@@ -16,9 +15,10 @@ function final($code)
 	exit $code
 }
 
+#Pass True to build the x64 variant
 function makeSlnFiles($x64)
 {
-	$build_dir = "build-" + $version
+	$build_dir = "build-" + $libressl_version
 	$vsString = "Visual Studio 15 2017"
 	$deployDir = "$pwd\Deploy\"
 	if($x64)
@@ -31,10 +31,11 @@ function makeSlnFiles($x64)
 	{
 		$deployDir = "$deployDir\x86"
 	}
-	
+	$deployDir = "$deployDir\LibreSSL"
 	cd Sources/libressl
 	mkdir $build_dir
 	cd $build_dir
+	#This is where the install prefix is added to the INSTALL.vcxproj CMAKE_INSTALL_PREFIX=...
 	cmake -DBUILD_SHARED_LIBS=ON -G"$vsString" -DCMAKE_INSTALL_PREFIX="$deploydir" ..
 
 }

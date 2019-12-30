@@ -1,46 +1,46 @@
---- tests/tlsexttest.c.orig	Wed Nov  7 20:01:26 2018
-+++ tests/tlsexttest.c	Wed Nov  7 20:01:35 2018
-@@ -1676,7 +1676,9 @@
+--- tests/tlsexttest.c.orig	Thu Apr 11 06:27:40 2019
++++ tests/tlsexttest.c	Tue May  7 02:07:40 2019
+@@ -1654,7 +1654,9 @@
  };
  
- static unsigned char tlsext_sni_serverhello[] = {
+ static unsigned char tlsext_sni_server[] = {
 +	0x00
  };
-+const size_t sizeof_tlsext_sni_serverhello = 0;
++const size_t sizeof_tlsext_sni_server = 0;
  
  static int
- test_tlsext_sni_clienthello(void)
-@@ -1839,9 +1841,9 @@
+ test_tlsext_sni_client(void)
+@@ -1817,9 +1819,9 @@
  	if (!CBB_finish(&cbb, &data, &dlen))
  		errx(1, "failed to finish CBB");
  
--	if (dlen != sizeof(tlsext_sni_serverhello)) {
-+	if (dlen != sizeof_tlsext_sni_serverhello) {
- 		FAIL("got serverhello SNI with length %zu, "
--		    "want length %zu\n", dlen, sizeof(tlsext_sni_serverhello));
-+		    "want length %zu\n", dlen, sizeof_tlsext_sni_serverhello);
+-	if (dlen != sizeof(tlsext_sni_server)) {
++	if (dlen != sizeof_tlsext_sni_server) {
+ 		FAIL("got server SNI with length %zu, "
+-		    "want length %zu\n", dlen, sizeof(tlsext_sni_server));
++		    "want length %zu\n", dlen, sizeof_tlsext_sni_server);
  		goto err;
  	}
  
-@@ -1850,14 +1852,14 @@
+@@ -1828,14 +1830,14 @@
  		fprintf(stderr, "received:\n");
  		hexdump(data, dlen);
  		fprintf(stderr, "test data:\n");
--		hexdump(tlsext_sni_serverhello, sizeof(tlsext_sni_serverhello));
-+		hexdump(tlsext_sni_serverhello, sizeof_tlsext_sni_serverhello);
+-		hexdump(tlsext_sni_server, sizeof(tlsext_sni_server));
++		hexdump(tlsext_sni_server, sizeof_tlsext_sni_server);
  		goto err;
  	}
  
  	free(ssl->session->tlsext_hostname);
  	ssl->session->tlsext_hostname = NULL;
  
--	CBS_init(&cbs, tlsext_sni_serverhello, sizeof(tlsext_sni_serverhello));
-+	CBS_init(&cbs, tlsext_sni_serverhello, sizeof_tlsext_sni_serverhello);
- 	if (!tlsext_sni_serverhello_parse(ssl, &cbs, &alert)) {
- 		FAIL("failed to parse serverhello SNI\n");
+-	CBS_init(&cbs, tlsext_sni_server, sizeof(tlsext_sni_server));
++	CBS_init(&cbs, tlsext_sni_server, sizeof_tlsext_sni_server);
+ 	if (!tlsext_sni_client_parse(ssl, &cbs, &alert)) {
+ 		FAIL("failed to parse server SNI\n");
  		goto err;
-@@ -2741,7 +2743,10 @@
- 	0x03, 0x01, 0x03, 0x03, 0x02, 0x01, 0x02, 0x03,
+@@ -2719,7 +2721,10 @@
+ 	0x02, 0x01, 0x02, 0x03,
  };
  
 -unsigned char tlsext_clienthello_disabled[] = {};
@@ -51,7 +51,7 @@
  
  static int
  test_tlsext_clienthello_build(void)
-@@ -2806,18 +2811,18 @@
+@@ -2784,18 +2789,18 @@
  	if (!CBB_finish(&cbb, &data, &dlen))
  		errx(1, "failed to finish CBB");
  
@@ -74,7 +74,7 @@
  		goto err;
  	}
  
-@@ -2832,7 +2837,10 @@
+@@ -2810,7 +2815,10 @@
  	return (failure);
  }
  
@@ -86,7 +86,7 @@
  
  unsigned char tlsext_serverhello_enabled[] = {
  	0x00, 0x13, 0xff, 0x01, 0x00, 0x01, 0x00, 0x00,
-@@ -2872,18 +2880,18 @@
+@@ -2850,18 +2858,18 @@
  	if (!CBB_finish(&cbb, &data, &dlen))
  		errx(1, "failed to finish CBB");
  
